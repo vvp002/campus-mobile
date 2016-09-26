@@ -105,7 +105,7 @@ var Home = React.createClass({
 	},
 
 	componentWillMount: function() {
-
+		console.log("remount");
 		if (general.platformAndroid() || AppSettings.NAVIGATOR_ENABLED) {
 			// Check Location Permissions Periodically
 			this.updateLocationPermission();
@@ -216,6 +216,7 @@ var Home = React.createClass({
 			//returns once the user has chosen to 'allow' or to 'not allow' access
 			//response is one of: 'authorized', 'denied', 'restricted', or 'undetermined'
 			this.setState({ locationPermission: response })
+			this.getLocationPermission();
 		});
 	},
 
