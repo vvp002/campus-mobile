@@ -146,13 +146,19 @@ export default class ShuttleCard extends CardComponent {
 					this.shuttleClosestStops[0].dist = distanceFromStop;
 					this.shuttleClosestStops[0].stopLat = shuttleRouteStop.lat;
 					this.shuttleClosestStops[0].stopLon = shuttleRouteStop.lon;
+					this.shuttleClosestStops[0].routes = [shuttle_routes[i].id];
+				} else if(distanceFromStop === this.shuttleClosestStops[0].dist) {
+					this.shuttleClosestStops[0].routes.push(shuttle_routes[i].id);
 				} else if (distanceFromStop < this.shuttleClosestStops[1].dist && this.shuttleClosestStops[0].stopID != shuttleRouteStop.id) {
 					this.shuttleClosestStops[1].stopID = shuttleRouteStop.id;
 					this.shuttleClosestStops[1].stopName = shuttleRouteStop.name;
 					this.shuttleClosestStops[1].dist = distanceFromStop;
 					this.shuttleClosestStops[1].stopLat = shuttleRouteStop.lat;
 					this.shuttleClosestStops[1].stopLon = shuttleRouteStop.lon;
-				}
+					this.shuttleClosestStops[1].routes = [shuttle_routes[i].id];
+				} else if(distanceFromStop === this.shuttleClosestStops[1].dist) {
+					this.shuttleClosestStops[1].routes.push(shuttle_routes[i].id);
+				} 
 			}
 		}
 
@@ -168,7 +174,8 @@ export default class ShuttleCard extends CardComponent {
 	}
 
 	fetchShuttleArrivalsByStop = (closestStopNumber, stopID) => {
-			ShuttleService.FetchShuttleArrivalsByStop(stopID)
+
+			ShuttleService.FetchShuttleArrivalsByStop(stopID, this.shuttleClosestStops[closestStopNumber].routes)
 			.then((responseData) => {
 				if (responseData.length > 0 && responseData[0].secondsToArrival) {
 
