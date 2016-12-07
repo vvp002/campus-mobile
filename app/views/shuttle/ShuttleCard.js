@@ -12,6 +12,7 @@ import ShuttleService from '../../services/shuttleService';
 import ShuttleOverview from './ShuttleOverview';
 import ShuttleStop from '../ShuttleStop';
 import LocationRequiredContent from '../common/LocationRequiredContent';
+import CardSlider from 'react-native-cards-slider';
 
 const css = require('../../styles/css');
 const logger = require('../../util/logger');
@@ -93,7 +94,9 @@ class ShuttleCard extends CardComponent {
 	render() {
 		return (
 			<Card id="shuttle" title="Shuttle" cardRefresh={this.refresh} isRefreshing={this.state.isRefreshing}>
-				{ this.renderContent() }
+				<CardSlider>
+					{ this.renderContent() }
+				</CardSlider>
 			</Card>
 		);
 	}
