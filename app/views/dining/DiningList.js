@@ -7,6 +7,7 @@ import {
 } from 'react-native';
 
 import DiningItem from './DiningItem';
+import CardSlider from 'react-native-cards-slider';
 
 const css = require('../../styles/css');
 
@@ -25,13 +26,26 @@ export default class DiningList extends React.Component {
 		} else {
 			diningData = this.props.data;
 		}
-		
+
 		const diningDatasource = this.datasource.cloneWithRows(diningData);
 
+		return (
+			<CardSlider>
+				{
+					diningData.map((data, index) => {
+						console.log('Hello');
+						console.log(index);
+						return (<DiningItem key={index} data={data} navigator={this.props.navigator} />);
+					})
+				}
+			</CardSlider>
+		);
+		/*
 		return (
 			<ListView dataSource={diningDatasource} renderRow={
 				(row) => <DiningItem data={row} navigator={this.props.navigator} />
 			}/>
 		);
+		*/
 	}
 }
