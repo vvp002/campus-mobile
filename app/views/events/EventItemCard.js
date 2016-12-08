@@ -4,15 +4,15 @@ import {
 	Text,
 	TouchableHighlight,
 	Image,
+	StyleSheet
 } from 'react-native';
 
 import EventDetail from './EventDetail';
+import general, { getMaxCardWidth, getPrimaryColor, getPRM } from '../../util/general';
 
-const css = require('../../styles/css');
-const general = require('../../util/general');
 const moment = require('moment');
 
-export default class EventItem extends React.Component {
+export default class EventItemCard extends React.Component {
 
 	gotoEventDetail(eventData) {
 		this.props.navigator.push({ id: 'EventDetail', name: 'EventDetail', title: 'Events', component: EventDetail, eventData });
@@ -35,19 +35,30 @@ export default class EventItem extends React.Component {
 
 		return (
 			<TouchableHighlight underlayColor={'rgba(200,200,200,.1)'} onPress={() => this.gotoEventDetail(data)}>
-				<View style={css.card_main}>
-					<View style={css.events_card_title_container}>
-						<Text style={css.events_card_title}>{eventTitleStr}</Text>
+				<View style={styles.card_main}>
+					<View style={styles.title_container}>
+						<Text style={styles.title}>{eventTitleStr}</Text>
 					</View>
-					<View style={css.events_card_container}>
-						<View style={css.events_card_left_container}>
-							{eventDescriptionStr ? (<Text style={css.events_card_desc}>{eventDescriptionStrTrimmed}</Text>) : null }
-							<Text style={css.events_card_postdate}>{eventDateDay}</Text>
+					<View style={styles.card_container}>
+						<View style={styles.content_container}>
+							<Image style={styles.card_image} source={{ uri: data.imagethumb }} />
+							{eventDescriptionStr ? (<Text style={styles.card_desc}>{eventDescriptionStrTrimmed}</Text>) : null }
+							<Text style={styles.card_postdate}>{eventDateDay}</Text>
 						</View>
-						<Image style={css.events_card_image} source={{ uri: data.imagethumb }} />
 					</View>
 				</View>
 			</TouchableHighlight>
 		);
 	}
 }
+
+const styles = StyleSheet.create({
+	card_main: { width: Math.round(getMaxCardWidth() * 0.666), borderWidth: 1, borderRadius: 2, borderColor: '#DDD', backgroundColor: '#F9F9F9', margin: 6, alignItems: 'flex-start', justifyContent: 'center', overflow: 'hidden' },
+	title_container: { flexDirection: 'row', alignItems: 'center', width: getMaxCardWidth(), padding: 8, borderBottomWidth: 1, borderBottomColor: '#DDD' },
+	title: { flex:1, flexWrap: 'wrap', fontSize: Math.round(17 * getPRM()), color: '#000', fontWeight: '400' },
+	card_container: { flex: 1, flexDirection: 'row', padding: 14, borderBottomWidth: 1, borderBottomColor: '#EEE', alignItems: 'center' },
+	content_container: { flex: 1 },
+	card_image: { width: Math.round(130 * getPRM()), height: Math.round(73 * getPRM()), marginRight: Math.round(4 * getPRM()), marginLeft: Math.round(10 * getPRM()), borderWidth: 1, borderColor: '#CCC' },
+	card_desc: { flexWrap: 'wrap', fontSize: Math.round(14 * getPRM()), color: '#666', paddingTop: Math.round(8 * getPRM()) },
+	card_postdate: { fontSize: Math.round(11 * getPRM()), color: getPrimaryColor(), paddingTop: Math.round(8 * getPRM()) },
+});

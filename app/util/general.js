@@ -3,6 +3,7 @@ import {
 	Easing,
 	Platform,
 	Linking,
+	Dimensions,
 } from 'react-native';
 
 const dateFormat = require('dateformat');
@@ -158,5 +159,25 @@ module.exports = {
 		} else {
 			return 0;
 		}
+	},
+
+	getMaxCardWidth() {
+		const windowSize = Dimensions.get('window');
+		const windowWidth = windowSize.width;
+
+		return windowWidth - 2 - 12;
+	},
+
+	getPRM() {
+		const windowSize = Dimensions.get('window');
+		const windowWidth = windowSize.width;
+		const maxAppWidth = 414;
+
+		// Applying pixel ratio modifier helps ensure all views/layouts across devices render in similar fashion
+		return windowWidth / maxAppWidth;
+	},
+
+	getPrimaryColor() {
+		return '#182B49';
 	}
 };
