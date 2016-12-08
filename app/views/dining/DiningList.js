@@ -33,8 +33,6 @@ export default class DiningList extends React.Component {
 			<CardSlider>
 				{
 					diningData.map((data, index) => {
-						console.log('Hello');
-						console.log(index);
 						return (<DiningItem key={index} data={data} navigator={this.props.navigator} />);
 					})
 				}
