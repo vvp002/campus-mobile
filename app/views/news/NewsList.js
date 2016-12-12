@@ -4,8 +4,9 @@ import {
 	ListView,
 	Text,
 	TouchableHighlight,
+	ScrollView,
 } from 'react-native';
-import NewsItem from './NewsItem';
+import NewsItemCard from './NewsItemCard';
 import NewsListView from './NewsListView';
 
 const css = require('../../styles/css');
@@ -36,18 +37,21 @@ export default class NewsList extends React.Component {
 			newsData = this.props.data;
 		}
 		else {
-			newsData = this.props.data.slice(0, this.props.defaultResults);
+			newsData = this.props.data;// .slice(0, this.props.defaultResults);
 		}
 
 		const newsDatasource = this.datasource.cloneWithRows(newsData);
 
 		return (
 			<View>
-				<ListView
-					dataSource={newsDatasource}
-					renderRow={this._renderRow}
-					style={css.wf_listview}
-				/>
+				<ScrollView
+					horizontal={true}
+					showsHorizontalScrollIndicator={false}
+				>
+					{
+						newsData.map((data, index) => (<NewsItemCard key={index} data={data} navigator={this.props.navigator} />))
+					}
+				</ScrollView>
 				<TouchableHighlight underlayColor={'rgba(200,200,200,.1)'} onPress={() => this.gotoNewsListView()}>
 					<View style={css.events_more}>
 						<Text style={css.events_more_label}>View All News</Text>
@@ -57,3 +61,10 @@ export default class NewsList extends React.Component {
 		);
 	}
 }
+/*
+<ListView
+	dataSource={newsDatasource}
+	renderRow={this._renderRow}
+	style={css.wf_listview}
+/>
+*/

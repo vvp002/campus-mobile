@@ -1,11 +1,10 @@
 import React from 'react';
 import {
-	View,
 	ListView,
-	Text,
-	TouchableHighlight,
+	ScrollView,
 } from 'react-native';
 
+import DiningItemCard from './DiningItemCard';
 import DiningItem from './DiningItem';
 import CardSlider from 'react-native-cards-slider';
 
@@ -30,13 +29,15 @@ export default class DiningList extends React.Component {
 		const diningDatasource = this.datasource.cloneWithRows(diningData);
 
 		return (
-			<CardSlider>
+			<ScrollView
+				horizontal={true}
+			>
 				{
 					diningData.map((data, index) => {
-						return (<DiningItem key={index} data={data} navigator={this.props.navigator} />);
+						return (<DiningItemCard key={index} data={data} navigator={this.props.navigator} />);
 					})
 				}
-			</CardSlider>
+			</ScrollView>
 		);
 		/*
 		return (
