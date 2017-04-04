@@ -26,18 +26,18 @@ const TopBannerView = React.createClass({
 
 	render() {
 		return (
-			<TouchableHighlight underlayColor={'rgba(200,200,200,.1)'} onPress={() => general.openURL('https://itunes.apple.com/us/app/uc-san-diego-ucsd/id318646412?mt=8')}>
+			<TouchableHighlight underlayColor={'rgba(200,200,200,.1)'} onPress={() => this.gotoUCSDMobileAppStore()}>
 				<Image style={[css.card_plain, css.card_special_events]} source={{uri: this.state.bannerImageURI}} />
 			</TouchableHighlight>
 		);
 	},
 
-	_handleOnPress() {
-		// Always use TimerMixin with requestAnimationFrame, setTimeout and
-		// setInterval
-		this.requestAnimationFrame(() => {
-			this.gotoWelcomeWeekView();
-		});
+	gotoUCSDMobileAppStore() {
+		if (general.platformIOS()) {
+			general.openURL('https://itunes.apple.com/app/id318646412');
+		} else if (general.platformAndroid()) {
+			general.openURL('https://play.google.com/store/apps/details?id=edu.ucsd');
+		}
 	},
 
 	gotoWelcomeWeekView() {
