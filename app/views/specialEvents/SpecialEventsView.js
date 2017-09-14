@@ -112,7 +112,7 @@ class SpecialEventsView extends Component {
 					onPress={this.handleFilterPress}
 				>
 					<Text
-						style={general.platformIOS() ? css.navButtonTextIOS : css.navButtonTextAndroid}
+						style={general.platformIOS() ? css.navButtonTextIOS : styles.navButtonTextAndroid}
 					>
 						Filter
 						</Text>
@@ -135,7 +135,7 @@ class SpecialEventsView extends Component {
 						style={styles.backButtonImage}
 					/>
 					<Text
-						style={general.platformIOS() ? css.navButtonTextIOS : css.navButtonTextAndroid}
+						style={general.platformIOS() ? css.navButtonTextIOS : styles.navButtonTextAndroid}
 					>
 						Back
 					</Text>
@@ -303,4 +303,5 @@ const styles = StyleSheet.create({
 	filterText: { textAlign: 'center', fontSize: 17, color: 'white' },
 	backButtonContainer: { flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: -7 },
 	backButtonImage: { color: COLOR_WHITE, marginRight: 7 },
+	navButtonTextAndroid: { color: COLOR_WHITE, marginTop: -3, fontWeight: '300', fontSize: 18 },
 });
