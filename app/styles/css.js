@@ -390,7 +390,22 @@ var css = StyleSheet.create({
 	pt10: { paddingTop: 10 },
 	fs12: { fontSize: 12 },
 	fs18: { fontSize: 18 },
-
+  	alert_container:{borderWidth: 1, borderColor: '#EEE', width: MAX_CARD_WIDTH, alignSelf:'center'},
+  	alert_header:{height:50, justifyContent:'center'},
+	alert_header_text: {color: 'white', fontSize: 26, paddingLeft: 10},
+	alert_footer:{height:6},
+	alert_body:{borderBottomColor: 1},
+  	alert_body_summary: {flexDirection: 'row', backgroundColor:'white', padding: 6},
+	alert_title: {fontWeight: '700'},
+	alert_message: {},
+    alertIcon: {width: 30, padding:6},
+	alert_status: {flex: 1, backgroundColor:'white', paddingLeft:6},
+	alert_update_body: {flex:1, backgroundColor:'white', paddingTop:10},
+	alert_update:{borderBottomWidth:1, borderColor: 'gray', paddingBottom:5, paddingTop:5},
+	alert_scroll: {height:300},
+	alert_more: { backgroundColor:'white', alignItems: 'center', justifyContent: 'center', paddingHorizontal: 4, paddingTop: 8, paddingBottom: 4 },
+	alert_more_label: { fontSize: 20, color: COLOR_PRIMARY, fontWeight: '300' },
+	alert_footer_container: {borderTopWidth:1}
 });
 
 function round(number) {
