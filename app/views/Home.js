@@ -2,10 +2,13 @@ import React from 'react';
 import {
 	View,
 	ScrollView,
+	Text
 } from 'react-native';
 import { connect } from 'react-redux';
 import { MenuContext } from 'react-native-popup-menu';
 import { checkGooglePlayServices } from 'react-native-google-api-availability-bridge';
+import Touchable from './common/Touchable';
+import { Actions } from 'react-native-router-flux';
 
 // Cards
 import WeatherCardContainer from './weather/WeatherCardContainer';
@@ -15,18 +18,29 @@ import QuicklinksCardContainer from './quicklinks/QuicklinksCardContainer';
 import NewsCardContainer from './news/NewsCardContainer';
 import DiningCardContainer from './dining/DiningCardContainer';
 import SpecialEventsCardContainer from './specialEvents/SpecialEventsCardContainer';
+import EmergencyAlertsCardContainer from './emergencyAlerts/EmergencyAlertsCardContainer';
 //import SurveyCardContainer from './survey/SurveyCardContainer';
 //import ScheduleCard from './schedule/ScheduleCard';
 
 import { platformAndroid } from '../util/general';
 import css from '../styles/css';
+import LayoutConstants from '../styles/LayoutConstants'
+import Icon from 'react-native-vector-icons/Foundation';
 import logger from '../util/logger';
+
+import emergencyJSON from '../../app/test/emergency-alert_emergency.json'
+// import emergencyJSON from '../../app/test/emergency-alert_warning.json'
+// import emergencyJSON from '../../app/test/emergency-alert_disabled.json'
+// console.log("Emergency:" + emergencyJSON)
 
 class Home extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			updatedGoogle: true,
+			emergencyAlert: emergencyJSON.emergencyStatus.emergency === true ? true:false,
+			emergencyType: emergencyJSON.emergencyStatus.emergencyType ? emergencyJSON.emergencyStatus.emergencyType : null,
+			emergencyUpdateCount: emergencyJSON.emergencyStatus.statusUpdates ? emergencyJSON.emergencyStatus.statusUpdates.length : null,
 		};
 	}
 
@@ -76,6 +90,9 @@ class Home extends React.Component {
 
 				if (this.props.cards[key].active) {
 					switch (key) {
+					case 'emergencyAlerts':
+						card = <EmergencyAlertsCardContainer key={'emergencyAlerts'}/>;
+						break;
 					case 'specialEvents':
 						card = <SpecialEventsCardContainer key={'specialEvents'} />;
 						break;
@@ -118,20 +135,23 @@ class Home extends React.Component {
 		if (this.props.scene.sceneKey !== 'Home' && this.props.scene.sceneKey !== 'tabbar') {
 			return null;
 		} else {
+			
 			return (
-				<MenuContext style={{ flex:1 }}>
-					<View style={css.main_container}>
+			<MenuContext style={{ flex:1 }}>
+			 		<View style={css.main_container}>
 						<ScrollView
 							ref={c => { this._scrollview = c; }}
 							onScroll={this.handleScroll}
-							scrollEventThrottle={69}
+						scrollEventThrottle={69}
 						>
+
 							{/* LOAD CARDS */}
 							{ this._getCards() }
-						</ScrollView>
-					</View>
-				</MenuContext>
-			);
+							
+			 		</ScrollView>
+				 	</View>
+				 </MenuContext>
+			 );
 		}
 	}
 }
@@ -153,5 +173,6 @@ function mapDispatchtoProps(dispatch) {
 		}
 	};
 }
+
 
 module.exports = connect(mapStateToProps, mapDispatchtoProps)(Home);
