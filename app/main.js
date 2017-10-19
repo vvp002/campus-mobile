@@ -33,6 +33,7 @@ import SpecialEventsDetailView from './views/specialEvents/SpecialEventsDetailVi
 import ShuttleRoutesListView from './views/shuttle/ShuttleRoutesListView';
 import ShuttleStopsListView from './views/shuttle/ShuttleStopsListView';
 import ShuttleSavedListView from './views/shuttle/ShuttleSavedListView';
+import EmergencyAlertsFullView from './views/emergencyAlerts/EmergencyAlerts';
 
 function mapStateToProps(state, props) {
 	return {
@@ -107,6 +108,7 @@ class Main extends Component {
 								<Scene key="ShuttleSavedListView" component={ShuttleSavedListView} title="Manage Stops" hideTabBar />
 								<Scene key="SpecialEventsView" component={SpecialEventsView} title={(route) => route.specialEventsTitle} hideTabBar renderBackButton={(route) => route.backButton} renderRightButton={(route) => route.filterButton} />
 								<Scene key="SpecialEventsDetailView" component={SpecialEventsDetailView} title={(route) => route.specialEventsTitle}  hideTabBar />
+								<Scene key="EmergencyAlertsFullView" component={EmergencyAlertsFullView} title="Emergency Alerts" hideTabBar />
 							</Scene>
 							<Scene key="tab2" title="Map" component={NearbyMapView} icon={TabIcons} />
 							<Scene key="tab3" title="Feedback" component={FeedbackView} icon={TabIcons} />
