@@ -5,14 +5,35 @@
         "title": "System Test",
         "message": "This is a test of the alert system for warnings.",
         "statusUpdates": [{
+            "time": "August 17, 2017 - 1:00 AM",
+            "message": "WARNING: System test update 10"
+        },{
+            "time": "August 17, 2017 - 12:00 AM",
+            "message": "WARNING: System test update 9"
+        },{
+            "time": "August 16, 2017 - 11:00 PM",
+            "message": "WARNING: System test update 8"
+        },{
+            "time": "August 16, 2017 - 10:00 PM",
+            "message": "WARNING: System test update 7"
+        },{
+            "time": "August 16, 2017 - 9:00 PM",
+            "message": "WARNING: System test update 6"
+        },{
+            "time": "August 16, 2017 - 8:00 PM",
+            "message": "WARNING: System test update 5"
+        }, {
             "time": "August 16, 2017 - 7:00 PM",
-            "message": "System test update 1"
+            "message": "WARNING: System test update 4"
         }, {
             "time": "August 16, 2017 - 6:00 PM",
-            "message": "System test update 2"
+            "message": "WARNING: System test update 3"
         }, {
             "time": "August 16, 2017 - 5:00 PM",
-            "message": "System test update 3"
+            "message": "WARNING: System test update 2"
+        }, {
+            "time": "August 16, 2017 - 4:00 PM",
+            "message": "WARNING: System test update 1"
         }]
     }
 }
