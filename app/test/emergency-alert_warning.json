@@ -4,6 +4,7 @@
         "emergencyType": "warning",
         "title": "System Test",
         "message": "This is a test of the alert system for warnings.",
+        "lastUpdated": 1502931600,
         "statusUpdates": [{
             "time": "August 17, 2017 - 1:00 AM",
             "message": "WARNING: System test update 10"

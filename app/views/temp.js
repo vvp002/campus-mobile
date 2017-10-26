@@ -34,6 +34,7 @@
         </View>
     </View>
 ) : null
+}
 
 // if (this.state.emergencyAlert) {
 			// 	var updates3 = []

@@ -4,6 +4,7 @@
         "emergencyType": "emergency",
         "title": "System Test",
         "message": "This is a test of the alert system for emergencies.",
+        "lastUpdated": 1502931600,
         "statusUpdates": [{
             "time": "August 17, 2017 - 1:00 AM",
             "message": "System test update 10"
