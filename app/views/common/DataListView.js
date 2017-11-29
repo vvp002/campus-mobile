@@ -7,6 +7,7 @@ import EventItem from '../events/EventItem';
 import NewsItem from '../news/NewsItem';
 import DiningItem from '../dining/DiningItem';
 import QuicklinksItem from '../quicklinks/QuicklinksItem';
+import EmergencyAlertsItem from '../emergencyAlerts/EmergencyAlertsItem';
 
 const dataSource = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
 
@@ -42,6 +43,9 @@ const DataListView = ({ style, data, rows, scrollEnabled, item, card }) => (
 			}
 			case 'QuicklinksItem': {
 				return (<QuicklinksItem data={row} card={card} />);
+			}
+			case 'EmergencyAlertsItem':{
+				return (<EmergencyAlertsItem data={row} card={card} />);
 			}
 			default: {
 				return null;

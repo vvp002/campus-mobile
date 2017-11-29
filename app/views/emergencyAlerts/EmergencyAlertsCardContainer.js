@@ -10,11 +10,11 @@ const EmergencyAlertsCardContainer = ({ alertsData }) => {
     console.log("Emergency Alerts Container")
 	return (
 		<DataListCard
-			id="quicklinks"
+			id="emergencyAlerts"
 			title="Links"
-			data={linksData}
+			data={alertsData}
 			rows={4}
-			item={'QuicklinksItem'}
+			item={'EmergencyAlertsItem'}
 			cardSort={general.dynamicSort('card-order')}
 		/>
 	);
