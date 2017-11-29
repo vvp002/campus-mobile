@@ -192,8 +192,8 @@ function* updateEmergencyAlerts() {
 		// Do nothing, no need to fetch new data
 	} else {
 		// Fetch for new data
-		const links = yield call(LinksService.EmergencyAlertService);
-
+		const emergencyAlerts = yield call(EmergencyAlertService.FetchEmergencyAlerts);
+		console.log("testing2");
 		if (emergencyAlerts) {
 			yield put({ type: 'SET_ALERTS', emergencyAlerts });
 		}

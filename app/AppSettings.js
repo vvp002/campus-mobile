@@ -36,8 +36,8 @@ module.exports = {
 	SHUTTLE_API_TTL: 6000, // 6 seconds
 	SHUTTLE_MASTER_TTL: 86400000, // 1 day
 	SPECIAL_EVENTS_TTL: 3600000, // 1 hour
-	DATA_SAGA_TTL: 60000, // 1 minute
-	EMEGENCY_ALERT_TTL: 60000, //1 minute
+	DATA_SAGA_TTL: 1000, // 1 minute
+	EMEGENCY_ALERT_TTL: 1000, //1 minute
 
 	USER_LOGIN: {
 		ENABLED: false,
