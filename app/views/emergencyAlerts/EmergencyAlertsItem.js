@@ -12,14 +12,15 @@ import {
 	COLOR_MGREY,
 	COLOR_DGREY,
 	COLOR_PRIMARY,
-	COLOR_BLACK
+	COLOR_BLACK,
 } from '../../styles/ColorConstants';
 import Touchable from '../common/Touchable';
 import { openURL } from '../../util/general';
 
 const EmergencyAlertsItem = ({ data }) => (
 	<View>
-		<Text>"nfonoeinnvo"</Text>
+		<Text>{data.time}</Text>
+		<Text>{data.message}</Text>		
 	</View>
 );
 

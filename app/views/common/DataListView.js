@@ -45,7 +45,7 @@ const DataListView = ({ style, data, rows, scrollEnabled, item, card }) => (
 				return (<QuicklinksItem data={row} card={card} />);
 			}
 			case 'EmergencyAlertsItem':{
-				return (<EmergencyAlertsItem data={row} card={card} />);
+				return (<EmergencyAlertsItem data={alertData.emergencyStatus} card={card} />);
 			}
 			default: {
 				return null;
