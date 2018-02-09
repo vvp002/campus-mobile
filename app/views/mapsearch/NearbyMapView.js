@@ -11,6 +11,7 @@ import {
 	BackAndroid
 } from 'react-native';
 import { connect } from 'react-redux';
+import { Actions } from 'react-native-router-flux';
 import MapView from 'react-native-maps';
 import { checkGooglePlayServices, openGooglePlayUpdate } from 'react-native-google-api-availability-bridge';
 import { COLOR_MGREY } from '../../styles/ColorConstants';
@@ -24,11 +25,12 @@ import SearchHistoryCard from './SearchHistoryCard';
 import SearchSuggest from './SearchSuggest';
 import SearchShuttleMenu from './SearchShuttleMenu';
 import Toast from 'react-native-simple-toast';
+import Touchable from '../common/Touchable';
 
 import css from '../../styles/css';
 import logger from '../../util/logger';
 
-import { gotoNavigationApp, platformAndroid } from '../../util/general';
+import { general, gotoNavigationApp, platformAndroid } from '../../util/general';
 
 const deviceHeight = Dimensions.get('window').height;
 const deviceWidth = Dimensions.get('window').width;
@@ -71,6 +73,10 @@ export class NearbyMapView extends React.Component {
 		logger.ga('View mounted: Full Map View');
 
 		BackAndroid.addEventListener('hardwareBackPress', this.pressIcon);
+		
+		Actions.refresh({
+			clearButton: this.renderClearButton()
+		});
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -267,6 +273,32 @@ export class NearbyMapView extends React.Component {
 		// delete vehicles[route];
 
 		this.setState({	vehicles: {} });
+	}
+
+	handleFullPress = () => {
+		Actions.refresh({
+			clearButton: this.renderClearButton()
+		});
+	}
+
+	handleClearPress = () => {
+		Actions.refresh({
+			clearButton: this.renderClearButton()
+		});
+	}
+
+	renderClearButton = () => {
+		return (
+			<Touchable
+				onPress={this.handleClearPress}
+			>
+				<Text
+					style={general.platformIOS() ? css.navButtonTextIOS : css.navButtonTextAndroid}
+				>
+					Clear
+				</Text>
+			</Touchable>
+		);
 	}
 
 	render() {

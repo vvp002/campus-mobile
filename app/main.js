@@ -108,7 +108,7 @@ class Main extends Component {
 								<Scene key="SpecialEventsView" component={SpecialEventsView} title={(route) => route.specialEventsTitle} hideTabBar renderBackButton={(route) => route.backButton} renderRightButton={(route) => route.filterButton} />
 								<Scene key="SpecialEventsDetailView" component={SpecialEventsDetailView} title={(route) => route.specialEventsTitle}  hideTabBar />
 							</Scene>
-							<Scene key="tab2" title="Map" component={NearbyMapView} icon={TabIcons} />
+							<Scene key="tab2" title="Map" component={NearbyMapView} icon={TabIcons} renderRightButton={(route) => route.clearButton}/>
 							<Scene key="tab3" title="Feedback" component={FeedbackView} icon={TabIcons} />
 							<Scene key="tab4" title="User Settings" component={PreferencesView} icon={TabIcons} />
 						</Scene>
