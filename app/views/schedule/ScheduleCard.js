@@ -31,18 +31,20 @@ const numberOfCoursesToShow = 4;
 
 const ScheduleCard = (props) => {
 	const { coursesToShow, actionButton } = props;
-	const moments = new Array(4);
+	const moments = new Array(numberOfCoursesToShow);
+	if (props.firstYetToHappenCardIndex >= numberOfCoursesToShow) console.err('firstYetToHappenCardIndex should be 0-3');
 	for (let i = props.firstYetToHappenCardIndex; i < numberOfCoursesToShow; i++) {
 		let courseStart = moment().startOf('day')
 			.day(coursesToShow[i].day_code)
 			.second(coursesToShow[i].start_time);
-		if (moments[i - 1] && courseStart.isBefore(moments[i - 1].courseEnd)) {
-			courseStart = courseStart.add(7, 'd');
+		if (courseStart.isBefore()) courseStart = courseStart.add(7, 'days');
+		while (moments[i - 1] && courseStart.isBefore(moments[i - 1].startTime)) {
+			courseStart = courseStart.add(7, 'days');
 		}
 		let courseEnd = moment().startOf('day')
 			.day(coursesToShow[i].day_code)
 			.second(coursesToShow[i].end_time);
-		if (courseEnd.isBefore(courseStart)) {
+		while (courseEnd.isBefore(courseStart)) {
 			courseEnd = courseEnd.add(7, 'days');
 		}
 		const courseTime = {
@@ -50,12 +52,14 @@ const ScheduleCard = (props) => {
 			endTime : courseEnd
 		};
 		moments[i] = courseTime;
+		// console.warn(courseEnd.format("dddd, MMMM Do YYYY, h:mm:ss a"));
 	}
 	for (let i = props.firstYetToHappenCardIndex - 1; i >= 0; i--) {
 		let courseStart = moment().startOf('day')
 			.day(coursesToShow[i].day_code)
 			.second(coursesToShow[i].start_time);
-		while (moments[i + 1] && courseStart.isAfter(moments[i + 1].courseStart)) {
+		if (courseStart.isAfter()) courseStart = courseStart.subtract(7, 'days');
+		while (moments[i + 1] && courseStart.isAfter(moments[i + 1].startTime)) {
 			courseStart = courseStart.subtract(7, 'days');
 		}
 		let courseEnd = moment().startOf('day')
