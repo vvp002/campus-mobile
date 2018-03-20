@@ -303,12 +303,12 @@ export function getFinals() {
 
 	const courseItems = getData();
 	Object.keys(courseItems).forEach((day) => {
-    courseItems[day].forEach(function(item) {
-      if (item.special_mtg_code == "FI") {
-        finalItems[day].push(item);
-      }
-    });
-  });
+		courseItems[day].forEach((item) => {
+			if (item.special_mtg_code == 'FI') {
+				finalItems[day].push(item);
+			}
+		});
+	});
 
 	return finalItems;
 }
@@ -327,18 +327,18 @@ export function getClasses() {
 
 	const courseItems = getData();
 	Object.keys(courseItems).forEach((day) => {
-    courseItems[day].forEach(function(item) {
-      if (item.special_mtg_code == "") {
-        classItems[day].push(item);
-      }
-    });
-  });
+		courseItems[day].forEach((item) => {
+			if (item.special_mtg_code == '') {
+				classItems[day].push(item);
+			}
+		});
+	});
 
 	return classItems;
 }
 
 export function dayOfWeekInterpreter(abbr) {
-	fullString = '';
+	let fullString = '';
 	switch (abbr) {
 	case 'MO':
 		fullString = 'Monday';
@@ -427,7 +427,9 @@ export function getData() {
 				meeting_type: currData.meeting_type,
 				special_mtg_code: currData.special_mtg_code,
 				day_code: currData.days,
-				grade_option: currCourse.grade_option
+				grade_option: currCourse.grade_option,
+				course_level: currCourse.course_level,
+				units: currCourse.units,
 			};
 
 			courseItems[day].push(item);

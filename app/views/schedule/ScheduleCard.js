@@ -6,12 +6,13 @@ import {
 	TouchableHighlight,
 	ActivityIndicator
 } from 'react-native';
-// import { moment } from 'moment';
+import moment from 'moment';
 // import Icon from 'react-native-vector-icons/Ionicons';
 
 import { dayOfWeekInterpreter } from './scheduleData';
 import ScheduleText from './ScheduleCardText';
 import Card from '../card/Card';
+import buildingCode from './BuildingCode';
 
 // import css from '../../styles/css';
 import {
@@ -22,15 +23,59 @@ import {
 	// COLOR_BLACK,
 	COLOR_VDGREY,
 	COLOR_DGREY,
-	COLOR_DMGREY
+	// COLOR_DMGREY
 } from '../../styles/ColorConstants';
 import { MAX_CARD_WIDTH } from '../../styles/LayoutConstants';
 
+const numberOfCoursesToShow = 4;
+
 const ScheduleCard = (props) => {
 	const { coursesToShow, actionButton } = props;
+	const moments = new Array(4);
+	for (let i = props.firstYetToHappenCardIndex; i < numberOfCoursesToShow; i++) {
+		let courseStart = moment().startOf('day')
+			.day(coursesToShow[i].day_code)
+			.second(coursesToShow[i].start_time);
+		if (moments[i - 1] && courseStart.isBefore(moments[i - 1].courseEnd)) {
+			courseStart = courseStart.add(7, 'd');
+		}
+		let courseEnd = moment().startOf('day')
+			.day(coursesToShow[i].day_code)
+			.second(coursesToShow[i].end_time);
+		if (courseEnd.isBefore(courseStart)) {
+			courseEnd = courseEnd.add(7, 'days');
+		}
+		const courseTime = {
+			startTime : courseStart,
+			endTime : courseEnd
+		};
+		moments[i] = courseTime;
+	}
+	for (let i = props.firstYetToHappenCardIndex - 1; i >= 0; i--) {
+		let courseStart = moment().startOf('day')
+			.day(coursesToShow[i].day_code)
+			.second(coursesToShow[i].start_time);
+		while (moments[i + 1] && courseStart.isAfter(moments[i + 1].courseStart)) {
+			courseStart = courseStart.subtract(7, 'days');
+		}
+		let courseEnd = moment().startOf('day')
+			.day(coursesToShow[i].day_code)
+			.second(coursesToShow[i].end_time);
+		while (courseEnd.isBefore(courseStart)) {
+			courseEnd = courseEnd.subtract(7, 'days');
+		}
+		const courseTime = {
+			startTime : courseStart,
+			endTime : courseEnd
+		};
+		moments[i] = courseTime;
+	}
+	const activeCourseLocationDetails = buildingCode.find(e => (props.coursesToShow[props.activeCourse].building === e.Code));
+	// console.warn(JSON.stringify(moment()));
+	// console.warn(JSON.stringify(coursesToShow[0]));
 	return (
 		<Card id="schedule" title="Upcoming Classes">
-			{coursesToShow.length ? (
+			{coursesToShow.length === numberOfCoursesToShow ? (
 				<View style={styles.sc_scheduleCard}>
 					<View style={styles.container}>
 						<View style={styles.leftHalf}>
@@ -38,10 +83,11 @@ const ScheduleCard = (props) => {
 								<View style={styles.leftHalf_upper_timeText}>
 									<ScheduleText style={styles.leftHalf_upper_timeText_firstSection}>
 										{/* Today 9 */}
-										{dayOfWeekInterpreter(props.coursesToShow[props.activeCourse].day_code)}
+										{TodayTomorrowOrLater(dayOfWeekInterpreter(props.coursesToShow[props.activeCourse].day_code), moments[props.activeCourse].startTime)}
 									</ScheduleText>
 									<ScheduleText style={styles.leftHalf_upper_timeText_secondSection}>
 										{/* AM */}
+										{moments[props.activeCourse].startTime.format('A')}
 									</ScheduleText>
 								</View>
 								<View style={styles.leftHalf_upper_classText}>
@@ -60,10 +106,11 @@ const ScheduleCard = (props) => {
 									<View style={styles.leftHalf_lower_sections_text}>
 										<ScheduleText style={styles.leftHalf_lower_sections_text_topSection}>
 											{/* In Session */}
-											{props.coursesToShow[props.activeCourse].time_string}
+											{(moments[props.activeCourse].startTime.isBefore() ? '' : 'Starts ') + moments[props.activeCourse].startTime.fromNow()}
 										</ScheduleText>
 										<ScheduleText style={styles.leftHalf_lower_sections_text_bottomSection}>
-											Start and Finish Time
+											{/* Start and Finish Time */}
+											{props.coursesToShow[props.activeCourse].time_string}
 										</ScheduleText>
 									</View>
 								</View>
@@ -72,12 +119,16 @@ const ScheduleCard = (props) => {
 									<View style={styles.leftHalf_lower_sections_text}>
 										<ScheduleText style={styles.leftHalf_lower_sections_text_topSection}>
 											{/* Pepper Canyon Hall 106 */}
-											{props.coursesToShow[props.activeCourse].building + ' '
+											{(activeCourseLocationDetails ?
+												activeCourseLocationDetails.Building
+												: props.coursesToShow[props.activeCourse].building) + ' '
 											+ props.coursesToShow[props.activeCourse].room}
 										</ScheduleText>
 										<ScheduleText style={styles.leftHalf_lower_sections_text_bottomSection}>
 											{/* In Sixth College */}
-											Class Room Location
+											{activeCourseLocationDetails ?
+												activeCourseLocationDetails.Location
+												: 'Class Room Location'}
 										</ScheduleText>
 									</View>
 								</View>
@@ -91,7 +142,8 @@ const ScheduleCard = (props) => {
 										</ScheduleText>
 										<ScheduleText style={styles.leftHalf_lower_sections_text_bottomSection}>
 											{/* Last Class Ends at 10:00 AM */}
-											Evaluation Option
+											{/* Evaluation Option */}
+											{props.coursesToShow[props.activeCourse].units + ' Unit Class'}
 										</ScheduleText>
 									</View>
 								</View>
@@ -162,27 +214,29 @@ const styles = StyleSheet.create({
 	leftHalf_upper_timeText_firstSection: {
 		fontSize: C.L * 7,
 		marginLeft: C.L * 1,
-		marginRight: C.L * 1,
+		marginRight: C.L * 1.5,
 		// fontWeight: 'bold',
 		color: COLOR_DGREY
 	},
 	leftHalf_upper_timeText_secondSection: {
-		fontSize: C.L * 5,
+		fontSize: C.L * 6,
 		alignSelf: 'flex-end',
-		marginBottom: C.L * 0.5,
-		fontWeight: 'bold'
+		// marginBottom: C.L * 0.5,
+		// fontWeight: 'bold',
+		color: COLOR_DGREY
 	},
-	leftHalf_upper_classText: { flex: 2, flexDirection: 'row', top: -C.L * 0 },
+	leftHalf_upper_classText: { flex: 2, flexDirection: 'row', alignItems: 'flex-end' },
 	leftHalf_upper_classText_firstSection: {
 		fontSize: C.L * 15,
 		fontWeight: 'bold',
 		marginRight: C.L * 3,
 		overflow: 'hidden',
+		lineHeight: Math.round(C.L * 16.5),
 	},
 	leftHalf_upper_classText_secondSection: {
 		fontSize: C.L * 5,
-		alignSelf: 'flex-end',
-		marginBottom: Math.round(C.L * 15 * 1.2) * 0.12,
+		// alignSelf: 'flex-end',
+		marginBottom: Math.round(C.L * 16.5) * 0.10,
 		color : COLOR_DGREY
 	},
 
@@ -237,7 +291,7 @@ const styles = StyleSheet.create({
 	},
 	rightHalf_each_dayAndTime_icon: {
 		fontSize: C.R * 9,
-		top: -C.R * 3,
+		top: -C.R * 3.5,
 		fontFamily: 'Material Design Icons',
 		lineHeight: Math.round(C.R * 9),
 	},
@@ -287,11 +341,49 @@ const DayItem = (props) => {
 	);
 };
 
+const TodayTomorrowOrLater = (dayOfWeekText, momentItem) => {
+	let intepretedString = '';
+	if (momentItem.isBetween(
+		moment().subtract(1, 'day').startOf('day'),
+		moment().subtract(1, 'day').endOf('day')
+	)) {
+		intepretedString = 'Yesterday';
+	}
+	else if (momentItem.isBetween(
+		moment().startOf('day'),
+		moment().endOf('day')
+	)) {
+		intepretedString = 'Today';
+	}
+	else if (momentItem.isBetween(
+		moment().add(1, 'days').startOf('day'),
+		moment().add(1, 'days').endOf('day')
+	)) {
+		intepretedString = 'Tomorrow';
+	}
+	else {
+		intepretedString = dayOfWeekText;
+	}
+	intepretedString += ' ';
+	if (momentItem.format('mm') === '00') {
+		intepretedString += momentItem.format('h');
+	}
+	else {
+		intepretedString += momentItem.format('h:mm');
+	}
+	return intepretedString;
+};
+
+ScheduleCard.defaultProps = {
+	firstYetToHappenCardIndex: 2,
+};
+
 ScheduleCard.propTypes = {
 	coursesToShow: PropTypes.arrayOf(PropTypes.object).isRequired,
 	actionButton: PropTypes.element.isRequired,
 	onClickCourse: PropTypes.func.isRequired,
-	activeCourse: PropTypes.number.isRequired
+	activeCourse: PropTypes.number.isRequired,
+	firstYetToHappenCardIndex: PropTypes.number
 };
 
 export default ScheduleCard;
