@@ -328,9 +328,9 @@ export function getClasses() {
 	const courseItems = getData();
 	Object.keys(courseItems).forEach((day) => {
     courseItems[day].forEach(function(item) {
-      if (item.special_mtg_code == "") {
-        classItems[day].push(item);
-      }
+        if (item.special_mtg_code == "") {
+                classItems[day].push(item);
+        }
     });
   });
 

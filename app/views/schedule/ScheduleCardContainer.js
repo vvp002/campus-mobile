@@ -9,16 +9,52 @@ import logger from '../../util/logger';
 /**
  * Container component for [ScheduleCard]{@link ScheduleCard}
  * */
+const dayToNum = {
+	SU: 0,
+	MO: 1,
+	TU: 2,
+	WE: 3,
+	TH: 4,
+	FR: 5,
+	SA: 6,
+	0: 'SU',
+	1: 'MO',
+	2: 'TU',
+	3: 'WE',
+	4: 'TH',
+	5: 'FR',
+	6: 'SA',
+};
 
 const processData = (scheduleData) => {
 	if (!scheduleData) return [];
+
+    let curDate = new Date();
+    curDate.setDate(25)
+    let date = curDate.toDateString();
+    let weekDayNum = curDate.getDay();
+    let weekDay = dayToNum[weekDayNum];
+    console.log('current date is: ', date, 'day of week is: ', weekDay)
+    console.log('scheduleData array is: ', scheduleData)
+    console.log('Testing scheduleData access: ', scheduleData['MO'])
+
 	let result = [];
-	result.push(...scheduleData.MO);
-	result.push(...scheduleData.TU);
-	result.push(...scheduleData.WE);
-	result.push(...scheduleData.TH);
-	result.push(...scheduleData.FR);
-	result = result.slice(0, 4);
+
+	// Push all the classes to the results array, starting from the current day
+	for (let i = 0; i < 7; i++) {
+		result.push(...scheduleData[dayToNum[weekDayNum]]);
+		weekDayNum = (weekDayNum+1) % 7;
+	};
+
+	// result.push(...scheduleData.MO);
+	// result.push(...scheduleData.TU);
+	// result.push(...scheduleData.WE);
+	// result.push(...scheduleData.TH);
+	// result.push(...scheduleData.FR);
+    console.log('result array is: ', result)
+	// result = result.slice(2, 6);
+
+
 	return result;
 };
 
